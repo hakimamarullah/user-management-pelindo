@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping(value = "/api/v1/users")
 public class UserController {
 
     private final UserService userService;
@@ -29,18 +29,19 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<ApiResponse<?>> getDataUser(@RequestParam Integer userId) {
-        if ("all".equals(String.valueOf(userId))) {
+    @GetMapping(value = "",
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+    )
+    public ResponseEntity<ApiResponse<?>> getDataUser(@RequestParam String userId) {
+        if ("all".equals(userId)) {
             ApiResponse<List<User>> result = userService.getAllUsers();
             return new ResponseEntity<>(result, HttpStatusCode.valueOf(result.getCode()));
         }
-        ApiResponse<User> result = userService.getUserById(userId);
+        ApiResponse<User> result = userService.getUserById(Integer.parseInt(userId));
         return new ResponseEntity<>(result, HttpStatusCode.valueOf(result.getCode()));
     }
 
-    @PostMapping(
-            value = "",
+    @PostMapping(value = "",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
     )

@@ -3,7 +3,6 @@ WORKDIR /opt/app
 
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
-RUN ./mvnw dependency:go-offline
 COPY ./src ./src
 RUN ./mvnw clean install -DskipTests
 

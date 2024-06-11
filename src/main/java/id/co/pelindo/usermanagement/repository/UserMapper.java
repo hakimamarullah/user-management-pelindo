@@ -18,11 +18,11 @@ public interface UserMapper {
 
    List<User> getAll();
 
-   User getById(Integer userId);
+   User getById(@Param("userId") Integer userId);
 
    int insertUser(User user);
 
-   int deleteById(Integer userId);
+   void deleteById(@Param("userId") Integer userId);
 
 
 }

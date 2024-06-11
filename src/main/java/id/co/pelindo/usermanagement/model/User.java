@@ -8,11 +8,13 @@ Version 1.0
 */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
 public class User {
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Integer userId;
     private String username;
     private String namaLengkap;

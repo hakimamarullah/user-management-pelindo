@@ -6,26 +6,31 @@
 <mapper namespace="id.co.pelindo.usermanagement.repository.UserMapper">
 
    <insert id="insertUser" parameterType="id.co.pelindo.usermanagement.model.User">
-       INSERT INTO pelindo.tbl_user(username,nama_lengkap,password,status)
+       INSERT INTO pelindo.tbl_user(username,nama_lengkap,status,password)
        VALUES(#{username}, #{namaLengkap}, #{status}, #{password})
    </insert>
 
 
 
     <select id="getById" parameterType="int" resultType="id.co.pelindo.usermanagement.model.User">
-        SELECT user_id, username, nama_lengkap, status, password
+        SELECT
+        <include refid="baseColumns"/>
         FROM pelindo.tbl_user
-        WHERE user_id = {#userId}
+        WHERE user_id = #{userId}
     </select>
 
 
     <select id="getAll" resultType="id.co.pelindo.usermanagement.model.User">
-        SELECT user_id, username, nama_lengkap, status, password
+        SELECT
+        <include refid="baseColumns"/>
         FROM pelindo.tbl_user
     </select>
 
+    <sql id="baseColumns">
+        user_id as userId, username, nama_lengkap as namaLengkap, status, password
+    </sql>
+
     <delete id="deleteById" parameterType="int">
-        DELETE FROM pelindo.tbl_user
-        WHERE user_id = {#userId}
+        DELETE FROM pelindo.tbl_user WHERE user_id = #{userId}
     </delete>
 </mapper>
