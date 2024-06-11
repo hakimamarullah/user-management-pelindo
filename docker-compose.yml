@@ -1,0 +1,40 @@
+services:
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    networks:
+      - spring-boot-mysql-network
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: pelindo
+      MYSQL_USER: pelindo
+      MYSQL_PASSWORD: pelindo
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    networks:
+      - spring-boot-mysql-network
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:3306/pelindo?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: pelindo
+      SPRING_DATASOURCE_PASSWORD: pelindo
+      SPRING_FLYWAY_URL: jdbc:mysql://mysql:3306/pelindo?useSSL=false&allowPublicKeyRetrieval=true
+
+
+volumes:
+  mysql-data:
+
+networks:
+  spring-boot-mysql-network:
+    driver: bridge
